@@ -22,6 +22,50 @@ nav>button:first-child { margin-left: 0; }
   padding-top: 120px;
 }
 
+/* Table column widths  */
+.fragments {
+/*  table-layout: fixed; */
+  width: 100%;
+  white-space: nowrap;
+} 
+.row-name {
+  width: 30%;
+}
+.row-start {
+  width: 15%;
+}
+.row-finish {
+  width: 15%;
+}
+.row-edit {
+  width: 20%;
+}
+.row-delete {
+  width: 20%;
+}
+.fragments td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fragments th {
+  background: darkblue;
+  color: white;
+}
+.fragments td,
+.fragments th {
+  text-align: left;
+  padding: 5px 10px;
+}
+.fragments tr:nth-child(even) {
+  background: lightblue;
+}
+.ed.hovered {
+  background: #ffff99;
+}
+.de.hovered {
+  background: #df9fbf;
+}
   </style>
 </head>
 <body>
@@ -41,10 +85,13 @@ nav>button:first-child { margin-left: 0; }
     </nav>
   </div>
 </section>
-<section class="wrapper" id="section_1">
-            
+<section class="wrapper" id="section_1">            
           <form id="selector">
             <h3>Pick an Interval You Want to Watch</h3>
+            <div>
+              <input id='id' name="id" placeholder="fragment ID">
+            </div>
+             <br></br>
             <div>
               <input id='start' name="start" placeholder="start: 0 sec.">
             </div>
@@ -53,13 +100,13 @@ nav>button:first-child { margin-left: 0; }
               <input id="finish" name="finish" placeholder="finish: 52 sec.">
             </div>
             <br></br>          
-            <button type="submit" id="knopka_2" value="Submit">Get It!</button> 
-            <br></br>
+            <button type="submit" id="knopka_2" value="Submit">Get It!</button>        
             <br></br>
             <br></br>
             <br></br>
             <br></br>          
           </form>
+
   <div id="second" style="display: none">
     <video id="frag2" controls preload="metadata">
       <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
@@ -70,8 +117,43 @@ nav>button:first-child { margin-left: 0; }
       <button id='b2'>Done with It</button>
     </nav>
   </div> 
-
 </section>
+
+<section class="wrapper" id="section_2">
+
+  <table class="fragments" id='fragTable'>
+    <thead>
+      <tr>
+        <th class="row-1 row-name">Fragment ID</th>
+        <th class="row-2 row-start">Start</th>
+        <th class="row-3 row-finish">Finish</th>
+        <th class="row-4 row-edit">Edit</th>
+        <th class="row-5 row-delete">Delete</th> 
+      </tr>
+    </thead>
+  </table>
+</section>
+<section class='wrapper' id='section_3' style="display: none">  
+            <form id="selector_edit">
+            <h3>Edit Fragment </h3>
+            <div>
+              <input id='id_edit' name="id" placeholder="fragment ID">
+            </div>
+             <br></br>
+            <div>
+              <input id='start_edit' name="start" placeholder="start: 0 sec.">
+            </div>
+            <br></br>
+            <div>
+              <input id="finish_edit" name="finish" placeholder="finish: 52 sec.">
+            </div>
+            <br></br>          
+            <button type="submit_edit" id="knopka_3" value="Submit">Get It!</button>   
+            <br></br>   
+            <br></br>  
+            <br></br>  
+          </form>
+</section> 
 
 <script>
 function mediaFragOne() {
@@ -99,7 +181,7 @@ mediaFragOne();
 <script>
 $(document).ready(function(){
   var new_src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4",
-      el,el_video='';
+      el, el_video='', items=[];
 $("#b1").on('click', function(){
 //  alert('lets play....');
   $('video#frag2').load();
@@ -115,11 +197,72 @@ $("#b2").on('click', function(){
 
 $("#selector").on('submit', function(event) {
   event.preventDefault();
+// Getting the segement info & storing it into the array      
+    var id_= $('#id').val();
     var start_ = $('#start').val();
     var finish_ = $('#finish').val();
-    var item = {'start': start_,
-                'finish': finish_};
+    var item = { idd: id_,
+                 start: start_,
+                 finish: finish_,
+                 edit: 'edit',
+                 del: 'delete'};
     console.log(item);
+    items.push(item);
+//defining table button
+//  var button = $("<button>Hi there</button>");
+//  button.click(function() {
+//    alert("Hi back!");
+//  });
+
+// displaying element into the table
+
+var lowBound = items.length > 1 ? items.length-1 : 0;
+for (var i = lowBound; i < items.length; i++) {
+  var row='row'+i;
+  $("tr").last().after("<tr><td>" + items[i].idd+ "</td><td>"
+    + items[i].start +"</td><td>" 
+    + items[i].finish +"</td><td class='ed'>"
+    + items[i].edit +"</td><td class='de'>"+items[i].del+'</td></tr>');
+//  button.appendTo("#ed");    
+}  
+
+//var rowCount = $('#fragTable tr').length;
+//console.log('rowCount',rowCount);
+
+//$('#fragTable').find('tr').click( function(){  
+//});
+
+//$('#fragTable').find('tr').on('click', function(){
+//  console.log('You clicked row '+ ($(this).index()) );
+//  var cell = $(this).find('td:last').text();
+//  $('#fragTable,tr').remove();
+//  console.log('You clicked delete');
+//});
+
+$('td').click(function(){
+  var col = $(this).parent().children().index($(this));
+  var row = $(this).parent().parent().children().index($(this).parent());
+  console.log('Row: ' + row + ', Column: ' + col);
+  if (col == '4'){
+    $('tr:eq('+row+')').remove();
+  } 
+  if (col == '3'){}
+});
+
+$("td:contains(edit)").hover(function() {        
+   $(this).toggleClass( "hovered" );
+   $(this).on('click',function(){
+    console.log('click!!!!');
+  }) 
+});
+$(".de").hover(function() {        
+  $(this).toggleClass( "hovered" );
+//  $(this).on('click',function(){
+//    alert('click!!!!');
+//  })
+});
+
+//starting the video play
     el=$(this).detach();
     if(el_video){$('#section_1').append(el_video);}
     $('#second').show();
