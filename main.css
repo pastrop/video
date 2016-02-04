@@ -1,0 +1,62 @@
+/* ==========================================================================
+   Styling - Video Fragments 
+   ========================================================================== */
+body { font-family: 'Source Code Pro', sans-serif ; }
+#main { width: 85%; margin: 1em auto; }
+section>div { margin: 1 1.5% 1.5% 1; padding: 1.0%; float: left; background-color: #df9fbf; }
+
+/* video */
+
+video { width: 100%; min-height: 430px; }
+button { cursor: pointer; }
+nav>button { margin: 0.27em; }
+nav>button:first-child { margin-left: 0; }
+.central { width: 520px; margin: auto; overflow: hidden; text-align: center;}
+.wrapper { width: 520px; margin: auto; overflow: hidden; text-align: center; display: inline-block; }
+
+.p {
+  text-align: center;
+  padding-top: 120px;
+}
+
+/* Table column widths  */
+.editing {
+  font-weight:bold;
+}
+.fragments {
+/*  table-layout: fixed; */
+  width: 100%;
+  white-space: nowrap;
+} 
+.row-name {
+  width: 30%;
+}
+.row-start {
+  width: 15%;
+}
+.row-finish {
+  width: 15%;
+}
+.row-edit {
+  width: 20%;
+}
+.row-delete {
+  width: 20%;
+}
+.fragments td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fragments th {
+  background: #993399;
+  color: white;
+}
+.fragments td,
+.fragments th {
+  text-align: left;
+  padding: 5px 10px;
+}
+.fragments tr:nth-child(even) {
+  background: #e6b2e6;
+}

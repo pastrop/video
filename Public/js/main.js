@@ -1,5 +1,5 @@
 $(document).ready(function(){
-function mediaFragOne() {
+function mediaFragOne() { //Only plays the movie itself
     var video, sources, nav, buttons;
     video = document.querySelector('video#frag1');
     video_1 = document.querySelector('video#frag2');
