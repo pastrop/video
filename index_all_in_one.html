@@ -1,98 +1,161 @@
 <!doctype html>
 <html>
-  <head>
-    <link rel="stylesheet" href="css/main.css">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-  </head>
+<head>
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <style>
+/* Styling: To Be Refactored in a CSS file */
 
-  <body>
-    <section class="wrapper">
-      <h1>Really Cool Movie</h1>
+body { font-family: 'Source Code Pro', sans-serif ; }
+#main { width: 85%; margin: 1em auto; }
+section>div { margin: 1 1.5% 1.5% 1; padding: 1.0%; float: left; background-color: #df9fbf; }
+
+/* video */
+
+video { width: 100%; min-height: 430px; }
+button { cursor: pointer; }
+nav>button { margin: 0.27em; }
+nav>button:first-child { margin-left: 0; }
+.wrapper { width: 520px; margin: auto; overflow: hidden; text-align: center; display: inline-block; }
+
+.p {
+  text-align: center;
+  padding-top: 120px;
+}
+
+/* Table column widths  */
+.editing {
+  font-weight:bold;
+}
+.fragments {
+/*  table-layout: fixed; */
+  width: 100%;
+  white-space: nowrap;
+} 
+.row-name {
+  width: 30%;
+}
+.row-start {
+  width: 15%;
+}
+.row-finish {
+  width: 15%;
+}
+.row-edit {
+  width: 20%;
+}
+.row-delete {
+  width: 20%;
+}
+.fragments td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fragments th {
+  background: #993399;
+  color: white;
+}
+.fragments td,
+.fragments th {
+  text-align: left;
+  padding: 5px 10px;
+}
+.fragments tr:nth-child(even) {
+  background: #e6b2e6;
+}
+
+  </style>
+  <!-- CSS Section Ends -->
+</head>
+<body>
+<section class="wrapper">
+  <h1>Really Cool Movie</h1>
 
   <!-- Fragments Template: Example of slicing the file, depends on native JS Script below -->
-      <div>
-        <video id="frag1" controls preload="metadata">
-          <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
-          <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4" type='video/webm;codecs="vp8, vorbis"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
-        </video>
-        <nav id = "nav_1">
-          <button data-start="10">Example 10sec On</button>
-          <button data-start="30">Example 30sec On</button>
-          <button data-start="40">Example 40sec On</button>
-        </nav>
-      </div>
-    </section>
+  <div>
+    <video id="frag1" controls preload="metadata">
+      <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
+      <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4" type='video/webm;codecs="vp8, vorbis"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
+    </video>
+    <nav id = "nav_1">
+      <button data-start="10">Example 10sec On</button>
+      <button data-start="30">Example 30sec On</button>
+      <button data-start="40">Example 40sec On</button>
+    </nav>
+  </div>
+</section>
 <!--Initial Segment Definition-->
-    <section class="wrapper" id="section_1">  
-      <h1>Select / Play Movie Fragments</h1>          
-        <form id="selector">
-          <h3>Pick an Interval You Want to Watch</h3>
-          <div>
-            <input id='id' name="id" placeholder="fragment ID">
-          </div>
-          <br></br>
-          <div>
-            <input id='start' name="start" placeholder="start: 0 sec.">
-          </div>
-          <br></br>
-          <div>
-            <input id="finish" name="finish" placeholder="finish: 52 sec.">
-          </div>
-          <br></br>          
-          <button type="submit" id="knopka_2" value="Submit">Save & Open the Player!</button>        
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>          
-        </form>
+<section class="wrapper" id="section_1">  
+  <h1>Select / Play Movie Fragments</h1>          
+          <form id="selector">
+            <h3>Pick an Interval You Want to Watch</h3>
+            <div>
+              <input id='id' name="id" placeholder="fragment ID">
+            </div>
+             <br></br>
+            <div>
+              <input id='start' name="start" placeholder="start: 0 sec.">
+            </div>
+            <br></br>
+            <div>
+              <input id="finish" name="finish" placeholder="finish: 52 sec.">
+            </div>
+            <br></br>          
+            <button type="submit" id="knopka_2" value="Submit">Save & Open the Player!</button>        
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>          
+          </form>
 <!--Playing Segments Being Defined-->
-        <div id="second" style="display: none">
-          <video id="frag2" controls preload="metadata">
-            <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
-            <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4" type='video/webm;codecs="vp8, vorbis"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
-          </video>
-        <nav id = "nav_2">
+  <div id="second" style="display: none">
+    <video id="frag2" controls preload="metadata">
+      <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
+      <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4" type='video/webm;codecs="vp8, vorbis"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
+    </video>
+    <nav id = "nav_2">
 <!--      <button id='b1'>Play The Selection</button> -->
-        <button id='b2'>Pick Another Fragment</button>
-        </nav>
-        </div> 
-    </section>
+      <button id='b2'>Pick Another Fragment</button>
+    </nav>
+  </div> 
+</section>
 
-    <section class="wrapper" id="section_2">
-      <table class="fragments" id='fragTable'>
-        <thead>
-        <tr>
+<section class="wrapper" id="section_2">
+
+  <table class="fragments" id='fragTable'>
+    <thead>
+      <tr>
         <th class="row-1 row-name">Fragment ID</th>
         <th class="row-2 row-start">Start</th>
         <th class="row-3 row-finish">Finish</th>
         <th class="row-4 row-edit">Edit/Play</th>
         <th class="row-5 row-delete">Delete</th> 
-        </tr>
-        </thead>
-      </table>
-    </section>
+      </tr>
+    </thead>
+  </table>
+</section>
 <!--Table of Segments with Editing/Playback/Delete Functionality-->
-    <section class='wrapper' id='section_3' style="display: none">  
-      <form id="selector_edit">
-        <h3>Edit Fragment </h3>
-        <div>
-          <input id='id_edit' name="id" placeholder="fragment ID">
-        </div>
-        <br></br>
-        <div>
-          <input id='start_edit' name="start" placeholder="start: 0 sec.">
-        </div>
-        <br></br>
-        <div>
-          <input id="finish_edit" name="finish" placeholder="finish: 52 sec.">
-        </div>
-        <br></br>          
-        <button type="submit_edit" id="knopka_3" value="Submit">Get It!</button>   
-        <br></br>   
-        <br></br>  
-        <br></br>  
-        </form>
-    </section> 
+<section class='wrapper' id='section_3' style="display: none">  
+            <form id="selector_edit">
+            <h3>Edit Fragment </h3>
+            <div>
+              <input id='id_edit' name="id" placeholder="fragment ID">
+            </div>
+             <br></br>
+            <div>
+              <input id='start_edit' name="start" placeholder="start: 0 sec.">
+            </div>
+            <br></br>
+            <div>
+              <input id="finish_edit" name="finish" placeholder="finish: 52 sec.">
+            </div>
+            <br></br>          
+            <button type="submit_edit" id="knopka_3" value="Submit">Get It!</button>   
+            <br></br>   
+            <br></br>  
+            <br></br>  
+          </form>
+</section> 
 <!-- JS to be moved to a separate file-->
 <script>
 //Native JS only used for playing the full movie / predefined fragments
@@ -212,6 +275,5 @@ $("td").hover(function() {
 });
 })
 </script>
-
-  </body>
+</body>
 </html>
