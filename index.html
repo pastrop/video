@@ -3,7 +3,7 @@
 <head>
   <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
   <style>
-/* Styling */
+/* Styling: To Be Refactored in a CSS file */
 
 body { font-family: 'Source Code Pro', sans-serif ; }
 #main { width: 85%; margin: 1em auto; }
@@ -23,6 +23,9 @@ nav>button:first-child { margin-left: 0; }
 }
 
 /* Table column widths  */
+.editing {
+  font-weight:bold;
+}
 .fragments {
 /*  table-layout: fixed; */
   width: 100%;
@@ -66,13 +69,15 @@ nav>button:first-child { margin-left: 0; }
 .de.hovered {
   background: #df9fbf;
 }
+
   </style>
+  <!-- CSS Section Ends -->
 </head>
 <body>
 <section class="wrapper">
-  <h1>Some Cool Movie</h1>
+  <h1>Really Cool Movie</h1>
 
-  <!-- Fragments Template -->
+  <!-- Fragments Template: Example of slicing the file, depends on native JS Script below -->
   <div>
     <video id="frag1" controls preload="metadata">
       <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
@@ -85,7 +90,9 @@ nav>button:first-child { margin-left: 0; }
     </nav>
   </div>
 </section>
-<section class="wrapper" id="section_1">            
+<!--Initial Segment Definition-->
+<section class="wrapper" id="section_1">  
+  <h1>Select / Play Movie Fragments</h1>          
           <form id="selector">
             <h3>Pick an Interval You Want to Watch</h3>
             <div>
@@ -106,7 +113,7 @@ nav>button:first-child { margin-left: 0; }
             <br></br>
             <br></br>          
           </form>
-
+<!--Playing Segments Being Defined-->
   <div id="second" style="display: none">
     <video id="frag2" controls preload="metadata">
       <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"  type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
@@ -127,12 +134,13 @@ nav>button:first-child { margin-left: 0; }
         <th class="row-1 row-name">Fragment ID</th>
         <th class="row-2 row-start">Start</th>
         <th class="row-3 row-finish">Finish</th>
-        <th class="row-4 row-edit">Edit</th>
+        <th class="row-4 row-edit">Edit/Play</th>
         <th class="row-5 row-delete">Delete</th> 
       </tr>
     </thead>
   </table>
 </section>
+<!--Table of Segments with Editing/Playback/Delete Functionality-->
 <section class='wrapper' id='section_3' style="display: none">  
             <form id="selector_edit">
             <h3>Edit Fragment </h3>
@@ -154,8 +162,9 @@ nav>button:first-child { margin-left: 0; }
             <br></br>  
           </form>
 </section> 
-
+<!-- JS to be moved to a separate file-->
 <script>
+//Native JS only used for playing the full movie / predefined fragments
 function mediaFragOne() {
     var video, sources, nav, buttons;
     video = document.querySelector('video#frag1');
@@ -179,15 +188,15 @@ function mediaFragOne() {
 mediaFragOne();
 </script>
 <script>
+//Jquery based core business functionality
 $(document).ready(function(){
   var new_src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4",
       el, el_video='', items=[];
 $("#b1").on('click', function(){
-//  alert('lets play....');
+
   $('video#frag2').load();
   $('video#frag2').get(0).play();
-
-//  $('#second').remove();      
+     
 });
 
 $("#b2").on('click', function(){
@@ -197,77 +206,77 @@ $("#b2").on('click', function(){
 
 $("#selector").on('submit', function(event) {
   event.preventDefault();
-// Getting the segement info & storing it into the array      
+// Getting the segment info & storing it into the array      
     var id_= $('#id').val();
     var start_ = $('#start').val();
     var finish_ = $('#finish').val();
     var item = { idd: id_,
                  start: start_,
                  finish: finish_,
-                 edit: 'edit',
+                 edit: 'save/play',
                  del: 'delete'};
-    console.log(item);
+    
     items.push(item);
-//defining table button
-//  var button = $("<button>Hi there</button>");
-//  button.click(function() {
-//    alert("Hi back!");
-//  });
+//    console.log('print after pushing element in: ',items.length);
 
 // displaying element into the table
 
 var lowBound = items.length > 1 ? items.length-1 : 0;
 for (var i = lowBound; i < items.length; i++) {
   var row='row'+i;
-  $("tr").last().after("<tr><td>" + items[i].idd+ "</td><td>"
-    + items[i].start +"</td><td>" 
+  $("tr").last().after("<tr><td contenteditable='true'>" + items[i].idd+ "</td><td contenteditable='true'>"
+    + items[i].start +"</td><td contenteditable='true'>" 
     + items[i].finish +"</td><td class='ed'>"
-    + items[i].edit +"</td><td class='de'>"+items[i].del+'</td></tr>');
-//  button.appendTo("#ed");    
+    + items[i].edit +"</td><td class='de'>"+items[i].del+'</td></tr>');    
 }  
 
-//var rowCount = $('#fragTable tr').length;
-//console.log('rowCount',rowCount);
-
-//$('#fragTable').find('tr').click( function(){  
-//});
-
-//$('#fragTable').find('tr').on('click', function(){
-//  console.log('You clicked row '+ ($(this).index()) );
-//  var cell = $(this).find('td:last').text();
-//  $('#fragTable,tr').remove();
-//  console.log('You clicked delete');
-//});
-
-$('td').click(function(){
+//Search for a table cell being clicked for subsequent editing / segment reply / segment delete
+$('td').unbind('click').click(function(event){
+//  event.preventDefault();
+//  event.stopPropagation();
   var col = $(this).parent().children().index($(this));
   var row = $(this).parent().parent().children().index($(this).parent());
-  console.log('Row: ' + row + ', Column: ' + col);
+//        var col = parseInt( $(this).index() ) + 1;
+//        var row = parseInt( $(this).parent().index() )+1;
+  console.log('Row: '+row, ', Column: ' + col);
+//Segment Delete Functionality  
   if (col == '4'){
-    $('tr:eq('+row+')').remove();
+    console.log('delete operation');
+    var row_delete=row;
+    console.log('first print: ',items.length);
+    items.splice(row-1, 1);
+    console.log('items: ',items);
+    console.log('second print: ',items.length);
+    $('tr:eq('+row_delete+')').remove();
   } 
-  if (col == '3'){}
+// Edit&Playback  
+  if (col == '3'){
+    var id_edit = $('td:eq('+(row-1)*5+')').html();
+    var start_edit = $('td:eq('+((row-1)*5+1)+')').html();
+    var finish_edit = $('td:eq('+((row-1)*5+2)+')').html();
+    items[row-1].idd=id_edit;
+    items[row-1].start=start_edit;
+    items[row-1].finish=finish_edit;
+    new_src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"+'#t='+items[row-1].start+','+items[row-1].finish;
+//    console.log('edits: ',id_edit,' ',start_edit,' ',finish_edit,' ',new_src);
+    $('#second').find('source').attr("src", new_src);  //define video segment 
+    $('video#frag2').load(); //load video segment 
+    $('video#frag2').get(0).play(); //play it
+  }
 });
 
-$("td:contains(edit)").hover(function() {        
-   $(this).toggleClass( "hovered" );
-   $(this).on('click',function(){
-    console.log('click!!!!');
-  }) 
-});
-$(".de").hover(function() {        
-  $(this).toggleClass( "hovered" );
-//  $(this).on('click',function(){
-//    alert('click!!!!');
-//  })
+$("td").hover(function() {        
+   $(this).addClass( "editing" );},function(){
+    $(this).removeClass( "editing" ); 
 });
 
-//starting the video play
+
+//starting the video play - start button on video player
     el=$(this).detach();
     if(el_video){$('#section_1').append(el_video);}
     $('#second').show();
-    var new_src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"+'#t='+item.start+','+item.finish;
-    console.log(new_src);
+    new_src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4"+'#t='+item.start+','+item.finish;
+//    console.log(new_src);
     $('#second').find('source').attr("src", new_src);
 });
 })
