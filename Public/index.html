@@ -9,7 +9,7 @@
   </head>
 
   <body ng-app="myApp"> <!--hooking App to the HTML -->
-    <section class='wrapper'>
+    <section class='wrapper' ng-controller="formCtrl">
       <h1>Movie Playback</h1>
   <!-- Whole Movie Playback -->
       <div id='first'>
@@ -18,7 +18,8 @@
           <source src="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4" type='video/webm;codecs="vp8, vorbis"' data-original="http://grochtdreis.de/fuer-jsfiddle/video/sintel_trailer-480.mp4">
         </video>
         <nav>
-        <p style="font-size: 57%;">Play Entire Movie</p>
+         <button  ng-click="playMovie()">Play Entire Movie</button> 
+        <!--<p style="font-size: 57%;">Play Entire Movie</p> -->
         </nav>
       </div>
     </section>

@@ -74,7 +74,12 @@ angular.module('myApp', [])
 
     $scope.getForm = function(){
       $scope.loadFlag=0;
-      console.log($scope.loadFlag);
+    };
+
+    $scope.playMovie = function(){
+      $('video#frag1').load(); //load video segment 
+      $('video#frag1').get(0).play(); //play it
+
     };
             
   });
