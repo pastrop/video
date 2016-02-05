@@ -65,12 +65,10 @@ for (var i = lowBound; i < items.length; i++) {
 
 //Search for a table cell being clicked for subsequent editing / segment reply / segment delete
 $('td').unbind('click').click(function(event){
-//  event.preventDefault();
-//  event.stopPropagation();
+
   var col = $(this).parent().children().index($(this));
   var row = $(this).parent().parent().children().index($(this).parent());
-//        var col = parseInt( $(this).index() ) + 1;
-//        var row = parseInt( $(this).parent().index() )+1;
+
   console.log('Row: '+row, ', Column: ' + col);
 //Segment Delete Functionality  
   if (col == '4'){
