@@ -11,7 +11,7 @@ video { width: 100%; min-height: 430px; }
 button { cursor: pointer; }
 nav>button { margin: 0.27em; }
 nav>button:first-child { margin-left: 0; }
-.wrapper { width: 520px; margin: auto; overflow: hidden; text-align: center; display: inline-block; }
+.wrapper { width: 662px; margin: auto; overflow: hidden; text-align: center; display: inline-block; }
 
 .p {
   text-align: center;

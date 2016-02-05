@@ -74,6 +74,7 @@ angular.module('myApp', [])
 
     $scope.getForm = function(){
       $scope.loadFlag=0;
+      console.log($scope.loadFlag);
     };
             
   });
